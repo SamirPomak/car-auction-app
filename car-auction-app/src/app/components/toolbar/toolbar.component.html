@@ -1,12 +1,17 @@
 <p-menubar [model]="items">
-  <ng-template pTemplate="start">
-    <img
-      src="../../../assets/car-auction-high-resolution-logo-transparent.png"
-      height="40"
-      class="mr-2"
-    />
-  </ng-template>
-  <ng-template pTemplate="end">
-    <input type="text" pInputText placeholder="Search" class="w-full" />
+  <ng-template pTemplate="start" style="display: flex; align-items: center">
+    <div class="flex align-items-center">
+      <a routerLink="/home">
+        <img
+          src="../../../assets/car-auction-high-resolution-logo-transparent.png"
+          height="40"
+          class="mr-2 cursor-pointer"
+        />
+      </a>
+      <span class="p-input-icon-right">
+        <i class="pi pi-search"></i>
+        <input type="text" pInputText placeholder="Search" />
+      </span>
+    </div>
   </ng-template>
 </p-menubar>

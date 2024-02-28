@@ -11,28 +11,24 @@ export class ToolbarComponent implements OnInit {
   ngOnInit() {
     this.items = [
       {
-        label: 'File',
-        icon: 'pi pi-fw pi-file',
+        label: 'Auctions',
+        icon: 'pi pi-fw pi-megaphone',
       },
       {
-        label: 'Edit',
-        icon: 'pi pi-fw pi-pencil',
+        label: 'Sell a car',
+        icon: 'pi pi-fw pi-car',
       },
       {
-        label: 'Users',
+        label: 'Profile',
         icon: 'pi pi-fw pi-user',
         items: [
           {
-            label: 'New',
+            label: 'Sign In',
+            icon: 'pi pi-fw pi-user',
+          },
+          {
+            label: 'Sign Up',
             icon: 'pi pi-fw pi-user-plus',
-          },
-          {
-            label: 'Delete',
-            icon: 'pi pi-fw pi-user-minus',
-          },
-          {
-            label: 'Search',
-            icon: 'pi pi-fw pi-users',
           },
         ],
       },
