@@ -1,3 +1,4 @@
+import { ButtonModule } from 'primeng/button';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,9 +15,9 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 // Import PrimeNG modules
 import { InputTextModule } from 'primeng/inputtext';
 import { MenubarModule } from 'primeng/menubar';
-
+import { HomeComponent } from './components/home/home.component';
 @NgModule({
-  declarations: [AppComponent, ToolbarComponent],
+  declarations: [AppComponent, ToolbarComponent, HomeComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -32,6 +33,7 @@ import { MenubarModule } from 'primeng/menubar';
     BrowserAnimationsModule,
     MenubarModule,
     InputTextModule,
+    ButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
