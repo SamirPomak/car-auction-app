@@ -25,8 +25,7 @@ export class LoginComponent {
       this.loginInProgress = true;
       this.userService
         .login(this.loginForm.getRawValue())
-        .then((credentials) => {
-          console.log({ credentials });
+        .then(() => {
           this.messageService.add({
             severity: 'success',
             summary: 'Success!',
