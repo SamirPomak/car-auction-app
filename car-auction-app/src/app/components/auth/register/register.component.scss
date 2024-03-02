@@ -1,0 +1,11 @@
+:host {
+  display: flex;
+  justify-content: center;
+  margin-top: 150px;
+
+  ::ng-deep {
+    p-password .p-inputtext:enabled:focus {
+      box-shadow: unset !important;
+    }
+  }
+}

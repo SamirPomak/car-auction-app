@@ -1,0 +1,69 @@
+<div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
+  <div class="text-center mb-5">
+    <img
+      src="../../../../assets/Road trip-bro.svg"
+      alt="Image"
+      height="200"
+      class="mb-3"
+    />
+    <div class="text-900 text-3xl font-medium mb-3">Sign Up</div>
+    <span class="text-600 font-medium line-height-3"
+      >Already have an account?</span
+    >
+    <a class="font-bold no-underline ml-2 text-green-500 cursor-pointer"
+      >Go to login!</a
+    >
+  </div>
+
+  <form [formGroup]="registerForm" (ngSubmit)="handleSubmit()">
+    <label for="email1" class="block text-900 font-medium mb-2">Email</label>
+    <input
+      id="email1"
+      formControlName="email"
+      type="text"
+      placeholder="Email address"
+      pInputText
+      class="w-full mb-3"
+    />
+
+    <label for="password1" class="block text-900 font-medium mb-2"
+      >Password</label
+    >
+    <p-password
+      inputId="password"
+      formControlName="password"
+      placeholder="Password"
+      [toggleMask]="true"
+      inputStyleClass="w-full flex "
+      styleClass="w-full flex mb-3"
+    />
+    <label for="confirmPassword" class="block text-900 font-medium mb-2"
+      >Confirm Password</label
+    >
+    <p-password
+      inputId="confirmPassword"
+      formControlName="confirmPassword"
+      placeholder="Confirm Password"
+      inputStyleClass="w-full flex "
+      styleClass="w-full flex mb-3"
+      [feedback]="false"
+      [toggleMask]="true"
+    />
+
+    <div class="flex align-items-center justify-content-end mb-6">
+      <a
+        class="font-bold no-underline ml-2 text-green-500 text-right cursor-pointer"
+        >Forgot password?</a
+      >
+    </div>
+
+    <button
+      pButton
+      [loading]="submitInProgress"
+      [disabled]="!registerForm.valid"
+      type="submit"
+      label="Sign Up"
+      class="w-full bg-green-600"
+    ></button>
+  </form>
+</div>
