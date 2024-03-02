@@ -2,7 +2,7 @@ import { ButtonModule } from 'primeng/button';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
@@ -15,9 +15,20 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 // Import PrimeNG modules
 import { InputTextModule } from 'primeng/inputtext';
 import { MenubarModule } from 'primeng/menubar';
+import { PasswordModule } from 'primeng/password';
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { RegisterComponent } from './components/auth/register/register.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 @NgModule({
-  declarations: [AppComponent, ToolbarComponent, HomeComponent],
+  declarations: [
+    AppComponent,
+    ToolbarComponent,
+    HomeComponent,
+    LoginComponent,
+    RegisterComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -34,8 +45,10 @@ import { HomeComponent } from './components/home/home.component';
     MenubarModule,
     InputTextModule,
     ButtonModule,
+    PasswordModule,
+    ToastModule,
   ],
-  providers: [],
+  providers: [FormBuilder, MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
