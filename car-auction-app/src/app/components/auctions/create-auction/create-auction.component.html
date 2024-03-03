@@ -1,0 +1,118 @@
+<div class="surface-card p-4 shadow-2 border-round w-full lg:w-4">
+  <div class="text-center mb-5">
+    <img
+      src="../../../../assets/Vehicle Sale-bro.svg"
+      alt="Image"
+      height="200"
+      class="mb-3"
+    />
+    <div class="text-900 text-3xl font-medium mb-3">Tell us about your car</div>
+  </div>
+
+  <form [formGroup]="auctionForm" (ngSubmit)="handleSubmit()">
+    <label for="make" class="block text-900 font-medium mb-2">Make</label>
+    <p-dropdown
+      formControlName="make"
+      inputId="make"
+      [options]="brands"
+      optionLabel="make"
+      (onChange)="handleOnBrandChange($event)"
+      placeholder="Select Make"
+      styleClass="w-6 mb-3"
+      optionLabel="label"
+      optionValue="value"
+    ></p-dropdown>
+
+    <label for="model" class="block text-900 font-medium mb-2">Model</label>
+    <p-dropdown
+      formControlName="model"
+      inputId="model"
+      [options]="models"
+      optionLabel="model"
+      placeholder="Select Model"
+      styleClass="w-6 mb-3"
+      optionLabel="label"
+      optionValue="value"
+    ></p-dropdown>
+
+    <label for="year" class="block text-900 font-medium mb-2">Year</label>
+    <p-inputNumber
+      formControlName="year"
+      inputId="year"
+      [useGrouping]="false"
+      [minlength]="4"
+      [maxlength]="4"
+      [size]="10"
+      inputStyleClass="mb-3"
+    >
+    </p-inputNumber>
+
+    <label for="engine" class="block text-900 font-medium mb-2">Engine</label>
+    <input
+      id="engine"
+      type="text"
+      formControlName="engine"
+      placeholder="Engine"
+      pInputText
+      class="w-6 mb-3"
+    />
+
+    <label for="mileage" class="block text-900 font-medium mb-2"
+      >Mileage (KM)</label
+    >
+    <p-inputNumber
+      formControlName="mileage"
+      inputId="mileage"
+      suffix=" km"
+      [useGrouping]="true"
+      [size]="10"
+      inputStyleClass="mb-3"
+    >
+    </p-inputNumber>
+
+    <label for="transmission" class="block text-900 font-medium mb-2"
+      >Transmission</label
+    >
+    <p-dropdown
+      formControlName="transmission"
+      inputId="transmission"
+      [options]="transmissionOptions"
+      optionLabel="transmission"
+      placeholder="Select Transmission"
+      styleClass="w-6 mb-3"
+      optionLabel="label"
+      optionValue="value"
+    ></p-dropdown>
+
+    <label for="color" class="block text-900 font-medium mb-2">Color</label>
+    <input
+      id="color"
+      type="text"
+      formControlName="color"
+      placeholder="Color"
+      pInputText
+      class="w-6 mb-3"
+    />
+
+    <label for="price" class="block text-900 font-medium mb-2">Price</label>
+    <p-inputNumber
+      formControlName="price"
+      inputId="price"
+      [size]="10"
+      mode="currency"
+      currency="USD"
+      locale="en-US"
+      inputStyleClass="mb-3"
+    >
+    </p-inputNumber>
+
+    <button
+      pButton
+      [loading]="false"
+      [disabled]="false"
+      label="Sign In"
+      type="submit"
+      class="w-full bg-green-600"
+    ></button>
+  </form>
+</div>
