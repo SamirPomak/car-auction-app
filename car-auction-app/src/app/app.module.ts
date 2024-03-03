@@ -12,7 +12,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
-// Import PrimeNG modules
 import { InputTextModule } from 'primeng/inputtext';
 import { MenubarModule } from 'primeng/menubar';
 import { PasswordModule } from 'primeng/password';
@@ -21,6 +20,11 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { DropdownModule } from 'primeng/dropdown';
+import { AuctionsComponent } from './components/auctions/auctions.component';
+import { AuctionDetailsComponent } from './components/auctions/auction-details/auction-details.component';
+import { CreateAuctionComponent } from './components/auctions/create-auction/create-auction.component';
+import { InputNumberModule } from 'primeng/inputnumber';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +32,9 @@ import { MessageService } from 'primeng/api';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
+    AuctionsComponent,
+    AuctionDetailsComponent,
+    CreateAuctionComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +54,8 @@ import { MessageService } from 'primeng/api';
     ButtonModule,
     PasswordModule,
     ToastModule,
+    DropdownModule,
+    InputNumberModule,
   ],
   providers: [FormBuilder, MessageService],
   bootstrap: [AppComponent],
