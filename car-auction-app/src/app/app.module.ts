@@ -25,6 +25,7 @@ import { AuctionsComponent } from './components/auctions/auctions.component';
 import { AuctionDetailsComponent } from './components/auctions/auction-details/auction-details.component';
 import { CreateAuctionComponent } from './components/auctions/create-auction/create-auction.component';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { FileUploadModule } from 'primeng/fileupload';
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,6 +57,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
     ToastModule,
     DropdownModule,
     InputNumberModule,
+    FileUploadModule,
   ],
   providers: [FormBuilder, MessageService],
   bootstrap: [AppComponent],

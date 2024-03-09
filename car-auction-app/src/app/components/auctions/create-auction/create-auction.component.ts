@@ -1,8 +1,17 @@
+import { uploadBytesResumable, ref, Storage } from '@angular/fire/storage';
 import { CarInfoService } from './../../../services/car-info/car-info.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DropdownChangeEvent } from 'primeng/dropdown';
+import { FileUploadHandlerEvent } from 'primeng/fileupload';
+import { UserService } from 'src/app/services/user.service';
+import {
+  Firestore,
+  addDoc,
+  collection,
+  updateDoc,
+} from '@angular/fire/firestore';
 
 type DropdownOption = { value: string; label: string };
 
@@ -12,7 +21,7 @@ type DropdownOption = { value: string; label: string };
   styleUrls: ['./create-auction.component.scss'],
 })
 export class CreateAuctionComponent implements OnInit {
-  loginInProgress = false;
+  submitInProgress = false;
   brands: DropdownOption[] = [];
   models: DropdownOption[] = [];
   transmissionOptions = [
@@ -20,10 +29,14 @@ export class CreateAuctionComponent implements OnInit {
     { label: 'Manual', value: 'Manual' },
     { label: 'Semi-Automatic', value: 'Semi-Automatic' },
   ];
+  private imageFiles: File[] = [];
   constructor(
     private formBuilder: FormBuilder,
     private carInfoService: CarInfoService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private userService: UserService,
+    private storage: Storage,
+    private firestore: Firestore
   ) {}
 
   ngOnInit() {
@@ -42,11 +55,29 @@ export class CreateAuctionComponent implements OnInit {
     transmission: ['', [Validators.required]],
     color: ['', [Validators.required]],
     price: [0, [Validators.required]],
+    images: [[''], Validators.required],
   });
 
   async handleSubmit() {
     if (this.auctionForm.valid) {
-      console.log(this.auctionForm.getRawValue());
+      this.submitInProgress = true;
+      const user = await this.userService.getUser();
+      const auctionData = {
+        ...this.auctionForm.getRawValue(),
+        author: { id: user?.uid, name: user?.displayName || 'Anonymous' },
+      };
+
+      this.auctionForm.controls.images.getRawValue().forEach((name, index) => {
+        const reference = ref(this.storage, `${user?.uid}/images/${name}`);
+        uploadBytesResumable(reference, this.imageFiles[index]);
+      });
+
+      const docRef = await addDoc(
+        collection(this.firestore, 'auctions'),
+        auctionData
+      );
+      await updateDoc(docRef, { id: docRef.id });
+      this.submitInProgress = false;
       // this.loginInProgress = true;
       // this.userService
       //   .login(this.auctionForm.getRawValue())
@@ -76,5 +107,13 @@ export class CreateAuctionComponent implements OnInit {
         .getModelsForBrand(event.value)
         .map((value) => ({ value, label: value }));
     }
+  }
+
+  onUpload(event: FileUploadHandlerEvent) {
+    console.log(event);
+    this.auctionForm.controls.images.setValue(
+      event.files.map((file) => file.name)
+    );
+    this.imageFiles = event.files;
   }
 }
