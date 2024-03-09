@@ -6,7 +6,7 @@ import {
   signOut,
   signInWithEmailAndPassword,
 } from '@angular/fire/auth';
-import { shareReplay } from 'rxjs';
+import { firstValueFrom, shareReplay } from 'rxjs';
 
 type UserCredentials = {
   email: string;
@@ -22,6 +22,10 @@ export class UserService {
 
   getUserObservable() {
     return this.user;
+  }
+
+  getUser() {
+    return firstValueFrom(this.user);
   }
 
   register(credentials: UserCredentials) {
