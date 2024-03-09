@@ -14,10 +14,16 @@ export class ToolbarComponent implements OnInit {
     {
       label: 'Auctions',
       icon: 'pi pi-fw pi-megaphone',
+      command: () => {
+        this.router.navigate(['/auctions']);
+      },
     },
     {
       label: 'Sell a car',
       icon: 'pi pi-fw pi-car',
+      command: () => {
+        this.router.navigate(['/auctions/create']);
+      },
     },
     {
       label: 'Profile',
@@ -44,10 +50,16 @@ export class ToolbarComponent implements OnInit {
     {
       label: 'Auctions',
       icon: 'pi pi-fw pi-megaphone',
+      command: () => {
+        this.router.navigate(['/auctions']);
+      },
     },
     {
       label: 'Sell a car',
       icon: 'pi pi-fw pi-car',
+      command: () => {
+        this.router.navigate(['/auctions/create']);
+      },
     },
     {
       label: 'My Profile',
