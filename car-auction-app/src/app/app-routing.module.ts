@@ -14,7 +14,12 @@ const routes: Routes = [
     path: 'auctions',
     children: [
       { path: '', pathMatch: 'full', component: AuctionsComponent },
-      { path: 'details/:auctionId', component: AuctionDetailsComponent },
+      {
+        path: 'my',
+        component: AuctionsComponent,
+        data: { mode: 'myAuctions' },
+      },
+      { path: 'details/:id', component: AuctionDetailsComponent },
       {
         path: 'create',
         component: CreateAuctionComponent,

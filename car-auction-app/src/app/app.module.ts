@@ -1,5 +1,5 @@
 import { ButtonModule } from 'primeng/button';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -26,6 +26,12 @@ import { AuctionDetailsComponent } from './components/auctions/auction-details/a
 import { CreateAuctionComponent } from './components/auctions/create-auction/create-auction.component';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FileUploadModule } from 'primeng/fileupload';
+import { DataViewModule } from 'primeng/dataview';
+import { ChipModule } from 'primeng/chip';
+import { GalleriaModule } from 'primeng/galleria';
+import { TableModule } from 'primeng/table';
+import { InplaceModule } from 'primeng/inplace';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,7 +64,13 @@ import { FileUploadModule } from 'primeng/fileupload';
     DropdownModule,
     InputNumberModule,
     FileUploadModule,
+    DataViewModule,
+    ChipModule,
+    GalleriaModule,
+    TableModule,
+    InplaceModule,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [FormBuilder, MessageService],
   bootstrap: [AppComponent],
 })
