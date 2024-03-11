@@ -1,1 +1,57 @@
-<p>auctions works!</p>
+<div class="card">
+  <p-dataView
+    #dv
+    [value]="auctions"
+    [layout]="'grid'"
+    [paginator]="true"
+    [rows]="15"
+    [loading]="loadingAuctions"
+  >
+    <ng-template pTemplate="header">
+      <div class="flex flex-column md:flex-row md:justify-content-between">
+        <!-- <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By Price" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown> -->
+      </div>
+    </ng-template>
+    <ng-template let-product pTemplate="gridItem">
+      <div class="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
+        <div class="p-3 border-1 surface-border surface-card border-round">
+          <div
+            class="flex flex-wrap align-items-center justify-content-between gap-2"
+          >
+            <span class="flex align-items-center gap-2">
+              <i class="pi pi-megaphone"></i>
+              <span class="font-semibold">{{
+                product.year + " " + product.make + " " + product.model
+              }}</span>
+            </span>
+            <p-button
+              *ngIf="mode"
+              icon="pi pi-pencil"
+              styleClass="bg-red-600"
+              severity="danger"
+            ></p-button>
+          </div>
+          <div class="flex flex-column gap-3 pt-4 relative">
+            <img
+              class="w-12 shadow-2 border-round"
+              [src]="product.images[0]"
+              [alt]="product.make"
+            />
+            <div class="text-lg">
+              ~{{ product.mileage }} kms, {{ product.engine }},
+              {{ product.transmission }}
+            </div>
+            <p-chip
+              styleClass="bg-gray-800 absolute"
+              [style]="{ bottom: '60px', left: '10px' }"
+            >
+              <div class="p-2 text-white">
+                <span class="text-500">Bid: </span>${{ product.price }}
+              </div>
+            </p-chip>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-dataView>
+</div>
