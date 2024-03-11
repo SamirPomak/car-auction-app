@@ -1,1 +1,87 @@
-<p>auction-details works!</p>
+<div
+  class="surface-card p-4 shadow-2 border-round w-full lg:w-7"
+  *ngIf="auction"
+>
+  <div
+    class="flex flex-wrap align-items-center justify-content-between gap-2 mb-3"
+  >
+    <span class="flex align-items-center gap-2 text-xl">
+      <i class="pi pi-megaphone"></i>
+      <span class="font-semibold">{{
+        auction.year + " " + auction.make + " " + auction.model
+      }}</span>
+    </span>
+  </div>
+  <p-galleria
+    [value]="auction.images"
+    [containerStyle]="{ 'max-width': '100%' }"
+    [numVisible]="5"
+    [circular]="true"
+    [showItemNavigatorsOnHover]="true"
+    [showItemNavigators]="true"
+    [visible]="fullscreen"
+    [fullScreen]="fullscreen"
+    (visibleChange)="toggleFullscreen($event)"
+  >
+    <ng-template pTemplate="item" let-item>
+      <img
+        [src]="item"
+        class="w-12"
+        [class.fullscreen]="fullscreen"
+        (click)="toggleFullscreen(true)"
+      />
+    </ng-template>
+    <ng-template pTemplate="thumbnail" let-item>
+      <div class="grid grid-nogutter justify-content-center">
+        <img [src]="item" height="80px" width="80px" />
+      </div>
+    </ng-template>
+  </p-galleria>
+
+  <div class="flex justify-content-between mt-3 align-items-center">
+    <p-chip styleClass="bg-gray-800">
+      <div class="p-2 text-white text-xl">
+        <span class="text-500">Highest Bid: </span>${{ auction.price }}
+      </div>
+    </p-chip>
+
+    <p-inplace
+      [closable]="true"
+      [disabled]="false"
+      title="Please login to place a bid!"
+      (onActivate)="onActivateBidMenu()"
+      #inplace
+    >
+      <ng-template pTemplate="display">
+        <span>Place Bid</span>
+      </ng-template>
+      <ng-template pTemplate="content">
+        <p-inputNumber
+          [(ngModel)]="bidPrice"
+          inputId="bidPrice"
+          #input
+          [size]="10"
+          mode="currency"
+          currency="USD"
+          [autofocus]="true"
+          locale="en-US"
+        >
+        </p-inputNumber>
+        <p-button icon="pi pi-check" (onClick)="placeBid()"></p-button>
+      </ng-template>
+    </p-inplace>
+  </div>
+
+  <p-table
+    [value]="auctionTableData"
+    [tableStyle]="{ 'min-width': '300px' }"
+    styleClass="mt-4"
+  >
+    <ng-template pTemplate="body" let-product>
+      <tr>
+        <th>{{ product.title | titlecase }}</th>
+        <td>{{ product.value }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

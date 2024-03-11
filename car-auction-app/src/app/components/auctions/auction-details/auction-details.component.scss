@@ -1,0 +1,44 @@
+:host {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+
+  ::ng-deep {
+    p-table {
+      th {
+        text-align: left;
+        padding: 1rem 1rem;
+        border: 1px solid #dee2e6;
+        border-width: 0 0 1px 0;
+        font-weight: 700;
+        color: #444c55;
+        background: #f8f9fa;
+        transition: box-shadow 0.2s;
+      }
+
+      td,
+      th {
+        border-width: 1px !important;
+      }
+    }
+
+    .p-inplace-display {
+      background: var(--green-600);
+      font-weight: bold;
+    }
+
+    .p-inplace-content {
+      display: inline-flex !important;
+      align-items: center;
+      gap: 3px;
+
+      .p-button {
+        background: var(--green-600);
+      }
+    }
+
+    p-galleria img.fullscreen {
+      width: 60vw !important;
+    }
+  }
+}

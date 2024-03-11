@@ -1,4 +1,10 @@
-import { uploadBytesResumable, ref, Storage } from '@angular/fire/storage';
+import {
+  uploadBytesResumable,
+  ref,
+  Storage,
+  uploadBytes,
+  getDownloadURL,
+} from '@angular/fire/storage';
 import { CarInfoService } from './../../../services/car-info/car-info.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -62,15 +68,22 @@ export class CreateAuctionComponent implements OnInit {
     if (this.auctionForm.valid) {
       this.submitInProgress = true;
       const user = await this.userService.getUser();
+      const imageUrls = [];
+
+      for (const [index, name] of this.auctionForm.controls.images
+        .getRawValue()
+        .entries()) {
+        const reference = ref(this.storage, `${user?.uid}/images/${name}`);
+        const task = await uploadBytes(reference, this.imageFiles[index]);
+        const url = await getDownloadURL(task.ref);
+        imageUrls.push(url);
+      }
+
+      this.auctionForm.controls.images.setValue(imageUrls);
       const auctionData = {
         ...this.auctionForm.getRawValue(),
         author: { id: user?.uid, name: user?.displayName || 'Anonymous' },
       };
-
-      this.auctionForm.controls.images.getRawValue().forEach((name, index) => {
-        const reference = ref(this.storage, `${user?.uid}/images/${name}`);
-        uploadBytesResumable(reference, this.imageFiles[index]);
-      });
 
       const docRef = await addDoc(
         collection(this.firestore, 'auctions'),
