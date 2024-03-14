@@ -12,7 +12,7 @@
         <!-- <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By Price" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown> -->
       </div>
     </ng-template>
-    <ng-template let-product pTemplate="gridItem">
+    <ng-template let-auction pTemplate="gridItem">
       <div class="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
         <div class="p-3 border-1 surface-border surface-card border-round">
           <div
@@ -20,33 +20,39 @@
           >
             <span class="flex align-items-center gap-2">
               <i class="pi pi-megaphone"></i>
-              <span class="font-semibold">{{
-                product.year + " " + product.make + " " + product.model
-              }}</span>
+              <span
+                class="font-semibold cursor-pointer auction-title"
+                (click)="onAuctionClick(auction.id)"
+                >{{
+                  auction.year + " " + auction.make + " " + auction.model
+                }}</span
+              >
             </span>
             <p-button
               *ngIf="mode"
               icon="pi pi-pencil"
               styleClass="bg-red-600"
               severity="danger"
+              (onClick)="onAuctionEditClick(auction.id)"
             ></p-button>
           </div>
           <div class="flex flex-column gap-3 pt-4 relative">
             <img
-              class="w-12 shadow-2 border-round"
-              [src]="product.images[0]"
-              [alt]="product.make"
+              class="w-12 shadow-2 border-round cursor-pointer"
+              [src]="auction.images[0].url"
+              [alt]="auction.make"
+              (click)="onAuctionClick(auction.id)"
             />
             <div class="text-lg">
-              ~{{ product.mileage }} kms, {{ product.engine }},
-              {{ product.transmission }}
+              ~{{ auction.mileage }} kms, {{ auction.engine }},
+              {{ auction.transmission }}
             </div>
             <p-chip
               styleClass="bg-gray-800 absolute"
               [style]="{ bottom: '60px', left: '10px' }"
             >
               <div class="p-2 text-white">
-                <span class="text-500">Bid: </span>${{ product.price }}
+                <span class="text-500">Bid: </span>${{ auction.price }}
               </div>
             </p-chip>
           </div>

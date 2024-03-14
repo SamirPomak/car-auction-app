@@ -23,7 +23,8 @@ export class AuctionsComponent {
     private firestore: Firestore,
     private destroyerRef: DestroyRef,
     private route: ActivatedRoute,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {
     const routeMode = route.snapshot.data['mode'];
     if (routeMode) {
@@ -45,5 +46,13 @@ export class AuctionsComponent {
         }
         console.log(data);
       });
+  }
+
+  onAuctionClick(id: string) {
+    this.router.navigate(['auctions/details', id]);
+  }
+
+  onAuctionEditClick(id: string) {
+    this.router.navigate(['auctions/edit', id]);
   }
 }
