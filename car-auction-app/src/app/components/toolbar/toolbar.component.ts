@@ -55,6 +55,13 @@ export class ToolbarComponent implements OnInit {
       },
     },
     {
+      label: 'My Auctions',
+      icon: 'pi pi-fw pi-file-edit',
+      command: () => {
+        this.router.navigate(['/auctions/my']);
+      },
+    },
+    {
       label: 'Sell a car',
       icon: 'pi pi-fw pi-car',
       command: () => {
