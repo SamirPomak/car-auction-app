@@ -1,12 +1,12 @@
 import {
-  uploadBytesResumable,
   ref,
   Storage,
   uploadBytes,
   getDownloadURL,
+  deleteObject,
 } from '@angular/fire/storage';
 import { CarInfoService } from './../../../services/car-info/car-info.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DropdownChangeEvent } from 'primeng/dropdown';
@@ -17,7 +17,12 @@ import {
   addDoc,
   collection,
   updateDoc,
+  doc,
 } from '@angular/fire/firestore';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Auction } from 'src/app/types';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { UserInfo } from 'firebase/auth';
 
 type DropdownOption = { value: string; label: string };
 
@@ -30,20 +35,35 @@ export class CreateAuctionComponent implements OnInit {
   submitInProgress = false;
   brands: DropdownOption[] = [];
   models: DropdownOption[] = [];
+  mode: 'edit' | 'default' = 'default';
+  auction: Auction | undefined;
   transmissionOptions = [
     { label: 'Automatic', value: 'Automatic' },
     { label: 'Manual', value: 'Manual' },
     { label: 'Semi-Automatic', value: 'Semi-Automatic' },
   ];
-  private imageFiles: File[] = [];
+  private user: UserInfo | null = null;
+  private imageFiles: Record<string, File> = {};
+  private deletedImages: string[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private carInfoService: CarInfoService,
     private messageService: MessageService,
     private userService: UserService,
     private storage: Storage,
-    private firestore: Firestore
-  ) {}
+    private firestore: Firestore,
+    private route: ActivatedRoute,
+    private destroyerRef: DestroyRef,
+    private router: Router
+  ) {
+    userService
+      .getUserObservable()
+      .pipe(takeUntilDestroyed(this.destroyerRef))
+      .subscribe((user) => {
+        this.user = user;
+      });
+  }
 
   ngOnInit() {
     console.log(this.carInfoService.getAllBrands());
@@ -51,6 +71,21 @@ export class CreateAuctionComponent implements OnInit {
       .getAllBrands()
       .map((value) => ({ value, label: value }));
     console.log(this.brands);
+
+    this.route.data
+      .pipe(takeUntilDestroyed(this.destroyerRef))
+      .subscribe(({ auction }) => {
+        if (auction) {
+          this.mode = 'edit';
+          this.auction = auction;
+          console.log(auction);
+          const { author, bids, id, ...data } = auction;
+          this.models = this.carInfoService
+            .getModelsForBrand(auction.make)
+            .map((value) => ({ value, label: value }));
+          this.auctionForm.setValue(data);
+        }
+      });
   }
   auctionForm = this.formBuilder.nonNullable.group({
     make: ['', [Validators.required]],
@@ -61,56 +96,90 @@ export class CreateAuctionComponent implements OnInit {
     transmission: ['', [Validators.required]],
     color: ['', [Validators.required]],
     price: [0, [Validators.required]],
-    images: [[''], Validators.required],
+    images: [[{ path: '', url: '' }], Validators.required],
   });
 
   async handleSubmit() {
     if (this.auctionForm.valid) {
       this.submitInProgress = true;
-      const user = await this.userService.getUser();
-      const imageUrls = [];
+      let auctionId = '';
+      try {
+        if (this.mode === 'default') {
+          const imageUrls = [];
 
-      for (const [index, name] of this.auctionForm.controls.images
-        .getRawValue()
-        .entries()) {
-        const reference = ref(this.storage, `${user?.uid}/images/${name}`);
-        const task = await uploadBytes(reference, this.imageFiles[index]);
-        const url = await getDownloadURL(task.ref);
-        imageUrls.push(url);
+          for (const {
+            path,
+          } of this.auctionForm.controls.images.getRawValue()) {
+            const reference = ref(this.storage, path);
+            const task = await uploadBytes(reference, this.imageFiles[path]);
+            const url = await getDownloadURL(task.ref);
+            imageUrls.push({ url, path });
+          }
+
+          this.auctionForm.controls.images.setValue(imageUrls);
+          const auctionData = {
+            ...this.auctionForm.getRawValue(),
+            author: {
+              id: this.user?.uid,
+              name: this.user?.displayName || 'Anonymous',
+            },
+          };
+
+          const docRef = await addDoc(
+            collection(this.firestore, 'auctions'),
+            auctionData
+          );
+          auctionId = docRef.id;
+          await updateDoc(docRef, { id: docRef.id });
+        } else {
+          const updatedImages = this.auctionForm.controls.images.getRawValue();
+
+          for (const path of this.deletedImages) {
+            const imageRef = ref(this.storage, path);
+            await deleteObject(imageRef);
+          }
+
+          for (const [index, image] of updatedImages.entries()) {
+            if (!image.url) {
+              const reference = ref(this.storage, image.path);
+              const task = await uploadBytes(
+                reference,
+                this.imageFiles[image.path]
+              );
+              const url = await getDownloadURL(task.ref);
+              updatedImages[index].url = url;
+            }
+          }
+
+          this.auctionForm.controls.images.setValue(updatedImages);
+          const auctionDoc = doc(
+            this.firestore,
+            `auctions/${this.auction?.id}`
+          );
+          await updateDoc(auctionDoc, this.auctionForm.getRawValue());
+          auctionId = this.auction?.id || auctionDoc.id;
+        }
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success!',
+          detail:
+            this.mode === 'default'
+              ? 'Your auction has started!'
+              : 'Your auction has been updated!',
+        });
+        this.router.navigate(['auctions/details', auctionId]);
+      } catch {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail:
+            this.mode === 'default'
+              ? 'Could not upload auction!'
+              : 'Could not update auction!',
+        });
+      } finally {
+        this.submitInProgress = false;
       }
-
-      this.auctionForm.controls.images.setValue(imageUrls);
-      const auctionData = {
-        ...this.auctionForm.getRawValue(),
-        author: { id: user?.uid, name: user?.displayName || 'Anonymous' },
-      };
-
-      const docRef = await addDoc(
-        collection(this.firestore, 'auctions'),
-        auctionData
-      );
-      await updateDoc(docRef, { id: docRef.id });
-      this.submitInProgress = false;
-      // this.loginInProgress = true;
-      // this.userService
-      //   .login(this.auctionForm.getRawValue())
-      //   .then(() => {
-      //     this.messageService.add({
-      //       severity: 'success',
-      //       summary: 'Success!',
-      //       detail: 'You have been signed in successfully!',
-      //     });
-      //   })
-      //   .catch((error) => {
-      //     this.messageService.add({
-      //       severity: 'error',
-      //       summary: 'Error',
-      //       detail: error.message,
-      //     });
-      //   })
-      //   .finally(() => {
-      //     this.loginInProgress = false;
-      //   });
     }
   }
 
@@ -123,10 +192,38 @@ export class CreateAuctionComponent implements OnInit {
   }
 
   onUpload(event: FileUploadHandlerEvent) {
+    if (!this.user) return;
+
     console.log(event);
+    if (this.mode === 'default') {
+      this.auctionForm.controls.images.setValue(
+        event.files.map((file) => ({
+          path: `${this.user?.uid}/images/${file.name}`,
+          url: '',
+        }))
+      );
+    } else {
+      const updatedImages = this.auctionForm.controls.images.getRawValue();
+      event.files.forEach((file) =>
+        updatedImages.push({
+          path: `${this.user?.uid}/images/${file.name}`,
+          url: '',
+        })
+      );
+      this.auctionForm.controls.images.setValue(updatedImages);
+    }
+
+    event.files.forEach((file) => {
+      this.imageFiles[`${this.user?.uid}/images/${file.name}`] = file;
+    });
+  }
+
+  onDeleteImage(imagePath: string) {
+    this.deletedImages.push(imagePath);
+    const currentImages = this.auctionForm.controls.images.getRawValue();
+
     this.auctionForm.controls.images.setValue(
-      event.files.map((file) => file.name)
+      currentImages.filter((image) => image.path !== imagePath)
     );
-    this.imageFiles = event.files;
   }
 }

@@ -6,10 +6,45 @@
       height="200"
       class="mb-3"
     />
-    <div class="text-900 text-3xl font-medium mb-3">Tell us about your car</div>
+    <div class="text-900 text-3xl font-medium mb-3">
+      {{ mode === "edit" ? "Edit your auction" : "Tell us about your car" }}
+    </div>
   </div>
 
   <form [formGroup]="auctionForm" (ngSubmit)="handleSubmit()">
+    <ng-container *ngIf="auction && auction.images">
+      <p-carousel
+        [value]="auctionForm.controls.images.getRawValue()"
+        [numVisible]="1"
+        [numScroll]="1"
+        [circular]="true"
+      >
+        <ng-template let-product pTemplate="item">
+          <div
+            class="border-1 surface-border border-round m-2 text-center py-2"
+          >
+            <div class="mb-3">
+              <img
+                [src]="product.url"
+                [alt]="auction.make"
+                class="w-12 shadow-2"
+              />
+            </div>
+            <div>
+              <div class="car-buttons mt-5">
+                <p-button
+                  (onClick)="onDeleteImage(product.path)"
+                  type="button"
+                  styleClass="p-button p-button-rounded mr-2 bg-red-600"
+                  icon="pi pi-trash"
+                ></p-button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-carousel>
+    </ng-container>
+
     <label for="make" class="block text-900 font-medium mb-2">Make</label>
     <p-dropdown
       formControlName="make"
@@ -66,8 +101,8 @@
     <p-inputNumber
       formControlName="mileage"
       inputId="mileage"
-      suffix=" km"
       [useGrouping]="true"
+      mode="decimal"
       [size]="10"
       inputStyleClass="mb-3"
     >
@@ -97,18 +132,21 @@
       class="w-6 mb-3"
     />
 
-    <label for="price" class="block text-900 font-medium mb-2">Price</label>
-    <p-inputNumber
-      formControlName="price"
-      inputId="price"
-      [size]="10"
-      mode="currency"
-      currency="USD"
-      locale="en-US"
-      inputStyleClass="mb-3"
-    >
-    </p-inputNumber>
+    <ng-container *ngIf="mode === 'default'">
+      <label for="price" class="block text-900 font-medium mb-2">Price</label>
+      <p-inputNumber
+        formControlName="price"
+        inputId="price"
+        [size]="10"
+        mode="currency"
+        currency="USD"
+        locale="en-US"
+        inputStyleClass="mb-3"
+      >
+      </p-inputNumber>
+    </ng-container>
 
+    <label class="block text-900 font-medium mb-2">Images</label>
     <p-fileUpload
       name="demo[]"
       [multiple]="true"

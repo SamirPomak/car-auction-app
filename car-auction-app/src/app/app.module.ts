@@ -31,7 +31,7 @@ import { ChipModule } from 'primeng/chip';
 import { GalleriaModule } from 'primeng/galleria';
 import { TableModule } from 'primeng/table';
 import { InplaceModule } from 'primeng/inplace';
-
+import { CarouselModule } from 'primeng/carousel';
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,6 +69,7 @@ import { InplaceModule } from 'primeng/inplace';
     GalleriaModule,
     TableModule,
     InplaceModule,
+    CarouselModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [FormBuilder, MessageService],
