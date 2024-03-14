@@ -8,9 +8,18 @@ import { AuctionDetailsComponent } from './components/auctions/auction-details/a
 import { CreateAuctionComponent } from './components/auctions/create-auction/create-auction.component';
 import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { auctionResolver } from './components/auctions/auction.resolver';
+import { ProfileComponent } from './components/auth/profile/profile.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
+  { path: 'home', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    ...canActivate(() => redirectUnauthorizedTo('/login')),
+  },
   {
     path: 'auctions',
     children: [
@@ -36,9 +45,6 @@ const routes: Routes = [
       },
     ],
   },
-  { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
 ];
 
 @NgModule({

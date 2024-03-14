@@ -32,6 +32,7 @@ import { GalleriaModule } from 'primeng/galleria';
 import { TableModule } from 'primeng/table';
 import { InplaceModule } from 'primeng/inplace';
 import { CarouselModule } from 'primeng/carousel';
+import { ProfileComponent } from './components/auth/profile/profile.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,6 +43,7 @@ import { CarouselModule } from 'primeng/carousel';
     AuctionsComponent,
     AuctionDetailsComponent,
     CreateAuctionComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

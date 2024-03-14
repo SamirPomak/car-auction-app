@@ -1,0 +1,18 @@
+:host {
+  display: flex;
+  justify-content: center;
+  margin-top: 150px;
+
+  ::ng-deep {
+    .p-chip {
+      width: 221px;
+      height: 80px;
+      margin-bottom: 30px;
+
+      img {
+        width: 4.5rem;
+        height: 4.5rem;
+      }
+    }
+  }
+}
