@@ -7,6 +7,7 @@ import { AuctionsComponent } from './components/auctions/auctions.component';
 import { AuctionDetailsComponent } from './components/auctions/auction-details/auction-details.component';
 import { CreateAuctionComponent } from './components/auctions/create-auction/create-auction.component';
 import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
+import { auctionResolver } from './components/auctions/auction.resolver';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -24,6 +25,14 @@ const routes: Routes = [
         path: 'create',
         component: CreateAuctionComponent,
         ...canActivate(() => redirectUnauthorizedTo('/login')),
+      },
+      {
+        path: 'edit/:id',
+        component: CreateAuctionComponent,
+        ...canActivate(() => redirectUnauthorizedTo('/login')),
+        resolve: {
+          auction: auctionResolver,
+        },
       },
     ],
   },
