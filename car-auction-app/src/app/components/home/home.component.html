@@ -17,6 +17,7 @@
         label="Auctions"
         type="button"
         class="mr-3 p-button-success"
+        (click)="onAuctionsClick()"
       ></button>
     </section>
   </div>
@@ -27,5 +28,61 @@
       class="md:ml-auto block md:h-full"
       style="clip-path: polygon(8% 0, 100% 0%, 100% 100%, 0 100%)"
     />
+  </div>
+  <div class="mt-4" style="border-top: 1px solid #e4e4e4">
+    <div class="card mt-5">
+      <span class="block text-3xl font-bold mb-1 text-center"
+        >Featured Auctions!</span
+      >
+      <p-dataView
+        #dv
+        [value]="auctions"
+        [layout]="'grid'"
+        [paginator]="false"
+        [loading]="loadingAuctions"
+        [rows]="15"
+      >
+        <ng-template let-auction pTemplate="gridItem">
+          <div class="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
+            <div class="p-3 border-1 surface-border surface-card border-round">
+              <div
+                class="flex flex-wrap align-items-center justify-content-between gap-2"
+              >
+                <span class="flex align-items-center gap-2">
+                  <i class="pi pi-megaphone"></i>
+                  <span
+                    class="font-semibold cursor-pointer auction-title"
+                    (click)="onAuctionClick(auction.id)"
+                    >{{
+                      auction.year + " " + auction.make + " " + auction.model
+                    }}</span
+                  >
+                </span>
+              </div>
+              <div class="flex flex-column gap-3 pt-4 relative">
+                <img
+                  class="w-12 shadow-2 border-round cursor-pointer"
+                  [src]="auction.images[0].url"
+                  [alt]="auction.make"
+                  (click)="onAuctionClick(auction.id)"
+                />
+                <div class="text-lg">
+                  ~{{ auction.mileage }} kms, {{ auction.engine }},
+                  {{ auction.transmission }}
+                </div>
+                <p-chip
+                  styleClass="bg-gray-800 absolute"
+                  [style]="{ bottom: '60px', left: '10px' }"
+                >
+                  <div class="p-2 text-white">
+                    <span class="text-500">Bid: </span>${{ auction.price }}
+                  </div>
+                </p-chip>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-dataView>
+    </div>
   </div>
 </div>
