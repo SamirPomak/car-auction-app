@@ -75,7 +75,7 @@
   <p-table
     [value]="auctionTableData"
     [tableStyle]="{ 'min-width': '300px' }"
-    styleClass="mt-4"
+    styleClass="mt-4 mb-5"
   >
     <ng-template pTemplate="body" let-product>
       <tr>
@@ -84,4 +84,67 @@
       </tr>
     </ng-template>
   </p-table>
+
+  <span class="font-bold text-2xl">Comments & Bids</span>
+  <div class="flex align-items-center gap-1 mt-4">
+    <textarea
+      [disabled]="!user"
+      id="float-input"
+      [placeholder]="user ? 'Comment' : 'Login to comment'"
+      rows="2"
+      cols="80"
+      pInputTextarea
+      [(ngModel)]="comment"
+    ></textarea>
+    <p-button
+      [disabled]="!user"
+      icon="pi pi-arrow-down"
+      styleClass="bg-green-600 border-circle"
+      (onClick)="addComment()"
+    ></p-button>
+  </div>
+  <div class="flex flex-column mt-4" *ngIf="commentsAndBids.length">
+    <div class="flex mb-4" *ngFor="let commentOrBid of commentsAndBids">
+      <p-avatar
+        [image]="
+          commentOrBid.author?.avatar || '../../../../assets/user-128.svg'
+        "
+        styleClass="mr-2"
+        size="large"
+        shape="circle"
+      ></p-avatar>
+      <div class="flex flex-column ml-1 relative" style="flex: 1">
+        <div>
+          <span class="font-bold">{{
+            commentOrBid.author?.name || "Anonymous"
+          }}</span>
+          <span class="font-normal ml-2">{{
+            commentOrBid.timestamp | date : "| dd.MM, H:mm'h'"
+          }}</span>
+        </div>
+        <p-button
+          *ngIf="
+            user?.uid &&
+            commentOrBid.comment &&
+            commentOrBid.author?.id === user?.uid
+          "
+          icon="pi pi-trash"
+          styleClass="bg-red-600 absolute"
+          [style]="{ right: '0px', bottom: '20px' }"
+          severity="danger"
+          (onClick)="deleteComment(commentOrBid)"
+        ></p-button>
+        <p class="mt-2" *ngIf="commentOrBid.comment">
+          {{ commentOrBid.comment }}
+        </p>
+        <ng-container *ngIf="commentOrBid.bid">
+          <p-chip styleClass="bg-gray-800 mt-2 border-round-sm">
+            <div class="p-2 text-white">
+              <span class="text-500">Bid: </span>${{ commentOrBid.bid }}
+            </div>
+          </p-chip>
+        </ng-container>
+      </div>
+    </div>
+  </div>
 </div>

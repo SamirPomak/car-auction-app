@@ -33,6 +33,9 @@ import { TableModule } from 'primeng/table';
 import { InplaceModule } from 'primeng/inplace';
 import { CarouselModule } from 'primeng/carousel';
 import { ProfileComponent } from './components/auth/profile/profile.component';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { AvatarModule } from 'primeng/avatar';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 @NgModule({
   declarations: [
     AppComponent,
@@ -72,6 +75,9 @@ import { ProfileComponent } from './components/auth/profile/profile.component';
     TableModule,
     InplaceModule,
     CarouselModule,
+    InputTextareaModule,
+    AvatarModule,
+    ToggleButtonModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [FormBuilder, MessageService],

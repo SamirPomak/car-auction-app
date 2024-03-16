@@ -5,8 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import { UserInfo } from 'firebase/auth';
 import { MessageService } from 'primeng/api';
 import { Inplace } from 'primeng/inplace';
+import { AuctionService } from 'src/app/services/auction.service';
 import { UserService } from 'src/app/services/user.service';
-import { Auction, Bid } from 'src/app/types';
+import { Auction, Bid, Comment } from 'src/app/types';
 
 const auctionInfoTableKeysSortOrder: Record<string, number> = {
   make: 1,
@@ -30,6 +31,8 @@ export class AuctionDetailsComponent {
   auctionTableData: Record<string, string | number>[] = [];
   bidPrice = 0;
   fullscreen = false;
+  comment = '';
+  commentsAndBids: Partial<Bid & Comment>[] = [];
   @ViewChild('inplace') inplaceInput!: Inplace;
   constructor(
     private route: ActivatedRoute,
@@ -45,8 +48,18 @@ export class AuctionDetailsComponent {
       .subscribe((data) => {
         if (data) {
           this.auction = data as Auction;
-          const { id, bids, images, price, author, ...tableData } = data;
+          this.commentsAndBids = [
+            ...(this.auction.comments || []),
+            ...(this.auction.bids || []),
+          ].sort(
+            (a, b) =>
+              new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf()
+          );
+
+          const { id, bids, images, price, author, comments, ...tableData } =
+            data;
           tableData['seller'] = author.name;
+
           this.auctionTableData = Object.keys(tableData)
             .sort(
               (a: string, b: string) =>
@@ -75,6 +88,39 @@ export class AuctionDetailsComponent {
     this.fullscreen = show;
   }
 
+  addComment() {
+    console.log(this.comment);
+    if (!this.auction || !this.comment.trim() || !this.user) return;
+    const comment = {
+      comment: this.comment.trim(),
+      author: {
+        id: this.user?.uid,
+        avatar: this.user?.photoURL,
+        name: this.user?.displayName,
+      },
+      timestamp: new Date().toISOString(),
+    };
+
+    const updatedComments = {
+      comments: [...(this.auction?.comments || []), comment],
+    };
+    const id = this.route.snapshot.paramMap.get('id')!;
+    const auctionDoc = doc(this.firestore, `auctions/${id}`);
+
+    updateDoc(auctionDoc, updatedComments);
+    this.comment = '';
+  }
+
+  deleteComment(deletedComment: Partial<Comment>) {
+    const updatedComments = this.auction?.comments.filter(
+      (comment) => comment.comment !== deletedComment.comment
+    );
+    const id = this.route.snapshot.paramMap.get('id')!;
+    const auctionDoc = doc(this.firestore, `auctions/${id}`);
+
+    updateDoc(auctionDoc, { comments: updatedComments });
+  }
+
   onActivateBidMenu() {
     this.bidPrice = this.auction?.price || 0;
   }
@@ -87,11 +133,12 @@ export class AuctionDetailsComponent {
     const currentBids = this.auction?.bids || [];
     const newBid: Bid = {
       bid: this.bidPrice,
-      buyer: {
+      author: {
         name: this.user.displayName,
         id: this.user.uid,
         avatar: this.user.photoURL,
       },
+      timestamp: new Date().toISOString(),
     };
     const dataForUpdate: Partial<Auction> = { bids: [...currentBids, newBid] };
     if (this.bidPrice > this.auction.price) {
