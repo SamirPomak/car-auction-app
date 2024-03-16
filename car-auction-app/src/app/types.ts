@@ -7,13 +7,13 @@ export type Auction = {
   transmission: string;
   color: string;
   price: number;
-  images: string[];
+  images: { path: string; url: string }[];
   bids: Bid[];
   comments: Comment[];
-  id: string;
+  id: string | undefined;
   author: {
-    id: 'string';
-    name: 'string';
+    id: string;
+    name: string;
   };
 };
 
