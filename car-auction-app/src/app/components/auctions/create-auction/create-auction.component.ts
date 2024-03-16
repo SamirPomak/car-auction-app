@@ -12,17 +12,11 @@ import { MessageService } from 'primeng/api';
 import { DropdownChangeEvent } from 'primeng/dropdown';
 import { FileUploadHandlerEvent } from 'primeng/fileupload';
 import { UserService } from 'src/app/services/user.service';
-import {
-  Firestore,
-  addDoc,
-  collection,
-  updateDoc,
-  doc,
-} from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Auction } from 'src/app/types';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserInfo } from 'firebase/auth';
+import { AuctionService } from 'src/app/services/auction.service';
 
 type DropdownOption = { value: string; label: string };
 
@@ -52,10 +46,10 @@ export class CreateAuctionComponent implements OnInit {
     private messageService: MessageService,
     private userService: UserService,
     private storage: Storage,
-    private firestore: Firestore,
     private route: ActivatedRoute,
     private destroyerRef: DestroyRef,
-    private router: Router
+    private router: Router,
+    private auctionService: AuctionService
   ) {
     userService
       .getUserObservable()
@@ -66,11 +60,9 @@ export class CreateAuctionComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.carInfoService.getAllBrands());
     this.brands = this.carInfoService
       .getAllBrands()
       .map((value) => ({ value, label: value }));
-    console.log(this.brands);
 
     this.route.data
       .pipe(takeUntilDestroyed(this.destroyerRef))
@@ -100,7 +92,7 @@ export class CreateAuctionComponent implements OnInit {
   });
 
   async handleSubmit() {
-    if (this.auctionForm.valid) {
+    if (this.auctionForm.valid && this.user?.uid) {
       this.submitInProgress = true;
       let auctionId = '';
       try {
@@ -120,17 +112,14 @@ export class CreateAuctionComponent implements OnInit {
           const auctionData = {
             ...this.auctionForm.getRawValue(),
             author: {
-              id: this.user?.uid,
+              id: this.user.uid,
               name: this.user?.displayName || 'Anonymous',
             },
           };
 
-          const docRef = await addDoc(
-            collection(this.firestore, 'auctions'),
-            auctionData
-          );
+          const docRef = await this.auctionService.uploadAuction(auctionData);
+          await this.auctionService.updateAuction(docRef.id, { id: docRef.id });
           auctionId = docRef.id;
-          await updateDoc(docRef, { id: docRef.id });
         } else {
           const updatedImages = this.auctionForm.controls.images.getRawValue();
 
@@ -152,12 +141,12 @@ export class CreateAuctionComponent implements OnInit {
           }
 
           this.auctionForm.controls.images.setValue(updatedImages);
-          const auctionDoc = doc(
-            this.firestore,
-            `auctions/${this.auction?.id}`
-          );
-          await updateDoc(auctionDoc, this.auctionForm.getRawValue());
-          auctionId = this.auction?.id || auctionDoc.id;
+          this.auction?.id &&
+            (await this.auctionService.updateAuction(
+              this.auction.id,
+              this.auctionForm.getRawValue()
+            ));
+          auctionId = this.auction?.id || '';
         }
         this.messageService.add({
           severity: 'success',

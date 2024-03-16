@@ -1,7 +1,7 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { AuctionService } from 'src/app/services/auction.service';
 import { Auction } from 'src/app/types';
 
 @Component({
@@ -13,16 +13,16 @@ export class HomeComponent {
   auctions: Auction[] = [];
   loadingAuctions = true;
   constructor(
-    private firestore: Firestore,
     private destroyerRef: DestroyRef,
-    private router: Router
+    private router: Router,
+    private auctionService: AuctionService
   ) {
-    const auctionCollection = collection(this.firestore, 'auctions');
-    collectionData(auctionCollection)
+    this.auctionService
+      .getAllAuctionsObserver()
       .pipe(takeUntilDestroyed(this.destroyerRef))
       .subscribe(async (data) => {
         this.loadingAuctions = false;
-        this.auctions = data.slice(data.length - 4) as Auction[];
+        this.auctions = data.slice(data.length - 3) as Auction[];
         console.log(data);
       });
   }

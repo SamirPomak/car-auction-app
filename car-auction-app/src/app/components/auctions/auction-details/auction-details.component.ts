@@ -1,6 +1,5 @@
 import { Component, DestroyRef, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Firestore, doc, docData, updateDoc } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { UserInfo } from 'firebase/auth';
 import { MessageService } from 'primeng/api';
@@ -36,14 +35,15 @@ export class AuctionDetailsComponent {
   @ViewChild('inplace') inplaceInput!: Inplace;
   constructor(
     private route: ActivatedRoute,
-    private firestore: Firestore,
     private destroyerRef: DestroyRef,
     private userService: UserService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private auctionService: AuctionService
   ) {
     const id = this.route.snapshot.paramMap.get('id')!;
-    const auctionDoc = doc(this.firestore, `auctions/${id}`);
-    docData(auctionDoc)
+
+    this.auctionService
+      .getAuctionObserver(id)
       .pipe(takeUntilDestroyed(this.destroyerRef))
       .subscribe((data) => {
         if (data) {
@@ -70,9 +70,6 @@ export class AuctionDetailsComponent {
               title: key,
               value: tableData[key],
             }));
-
-          console.log(this.auctionTableData);
-          console.log(data);
         }
       });
 
@@ -89,7 +86,6 @@ export class AuctionDetailsComponent {
   }
 
   addComment() {
-    console.log(this.comment);
     if (!this.auction || !this.comment.trim() || !this.user) return;
     const comment = {
       comment: this.comment.trim(),
@@ -105,9 +101,7 @@ export class AuctionDetailsComponent {
       comments: [...(this.auction?.comments || []), comment],
     };
     const id = this.route.snapshot.paramMap.get('id')!;
-    const auctionDoc = doc(this.firestore, `auctions/${id}`);
-
-    updateDoc(auctionDoc, updatedComments);
+    this.auctionService.updateAuction(id, updatedComments);
     this.comment = '';
   }
 
@@ -116,9 +110,7 @@ export class AuctionDetailsComponent {
       (comment) => comment.comment !== deletedComment.comment
     );
     const id = this.route.snapshot.paramMap.get('id')!;
-    const auctionDoc = doc(this.firestore, `auctions/${id}`);
-
-    updateDoc(auctionDoc, { comments: updatedComments });
+    this.auctionService.updateAuction(id, { comments: updatedComments });
   }
 
   onActivateBidMenu() {
@@ -129,7 +121,6 @@ export class AuctionDetailsComponent {
     if (!this.user || !this.auction) return;
 
     const id = this.route.snapshot.paramMap.get('id')!;
-    const auctionDoc = doc(this.firestore, `auctions/${id}`);
     const currentBids = this.auction?.bids || [];
     const newBid: Bid = {
       bid: this.bidPrice,
@@ -145,7 +136,7 @@ export class AuctionDetailsComponent {
       dataForUpdate.price = this.bidPrice;
     }
 
-    updateDoc(auctionDoc, dataForUpdate);
+    this.auctionService.updateAuction(id, dataForUpdate);
     this.inplaceInput.deactivate();
     this.messageService.add({
       severity: 'success',
