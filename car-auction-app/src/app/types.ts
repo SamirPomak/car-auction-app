@@ -9,6 +9,7 @@ export type Auction = {
   price: number;
   images: string[];
   bids: Bid[];
+  comments: Comment[];
   id: string;
   author: {
     id: 'string';
@@ -18,9 +19,20 @@ export type Auction = {
 
 export type Bid = {
   bid: number;
-  buyer: {
+  author: {
     name: string | null;
     id: string;
     avatar: string | null;
   };
+  timestamp: string;
+};
+
+export type Comment = {
+  comment: string;
+  author: {
+    id: string;
+    avatar: string | null;
+    name: string | null;
+  };
+  timestamp: string;
 };
