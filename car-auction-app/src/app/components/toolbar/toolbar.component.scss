@@ -1,24 +1,20 @@
 :host {
   position: fixed;
-    top: 0;
-    right: 0;
-    width: 100%;
-    z-index: 1000;
-    background: var(--surface-ground) !important;
+  top: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  background: var(--surface-ground) !important;
 
-    ::ng-deep {
-      .p-menubar-end {
-        display: none;
-      }
-
-      .p-menubar-start, .p-menubar-start > div {
-        display: flex;
-        justify-content: space-between;
-        flex-grow: 1;
-      }
-      .p-menubar-start > div {
-        margin-right: 10px;
-      }
+  ::ng-deep {
+    .p-menubar-start,
+    .p-menubar-start > div {
+      display: flex;
+      justify-content: space-between;
+      flex-grow: 1;
     }
+    .p-menubar-start > div {
+      margin-right: 10px;
+    }
+  }
 }
-

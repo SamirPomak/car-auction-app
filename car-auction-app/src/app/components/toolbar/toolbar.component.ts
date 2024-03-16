@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
 import { UserService } from 'src/app/services/user.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ToggleButtonChangeEvent } from 'primeng/togglebutton';
+import { Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-toolbar',
@@ -10,6 +13,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent implements OnInit {
+  darkMode = false;
+  private THEME_PREF_KEY = 'car-auction-theme-pref';
   private defaultMenuItems: MenuItem[] = [
     {
       label: 'Auctions',
@@ -100,7 +105,8 @@ export class ToolbarComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private destroyerRef: DestroyRef,
-    private messageService: MessageService
+    private messageService: MessageService,
+    @Inject(DOCUMENT) private document: Document
   ) {}
   ngOnInit() {
     this.userService
@@ -111,5 +117,23 @@ export class ToolbarComponent implements OnInit {
 
         this.items = user ? this.loggedInUserMenuItems : this.defaultMenuItems;
       });
+
+    const theme = localStorage.getItem(this.THEME_PREF_KEY);
+    if (theme === 'dark') {
+      this.darkMode = true;
+      this.document.documentElement.classList.add('dark');
+    }
+  }
+
+  onThemeChange(event: ToggleButtonChangeEvent) {
+    this.darkMode = !!event.checked;
+
+    if (this.darkMode) {
+      this.document.documentElement.classList.add('dark');
+    } else {
+      this.document.documentElement.classList.remove('dark');
+    }
+
+    localStorage.setItem(this.THEME_PREF_KEY, this.darkMode ? 'dark' : 'light');
   }
 }

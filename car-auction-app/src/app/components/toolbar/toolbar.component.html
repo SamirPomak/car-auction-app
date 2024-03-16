@@ -14,4 +14,12 @@
       </span>
     </div>
   </ng-template>
+  <ng-template pTemplate="end">
+    <p-toggleButton
+      [(ngModel)]="darkMode"
+      onIcon="pi pi-sun"
+      offIcon="pi pi-moon"
+      (onChange)="onThemeChange($event)"
+    ></p-toggleButton>
+  </ng-template>
 </p-menubar>
