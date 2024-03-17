@@ -1,27 +1,155 @@
-# CarAuctionApp
+<div id="top"></div>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.12.
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://car-auction-api.web.app/home">
+    <img src="../car-auction-app/src/assets/car-auction-high-resolution-logo-transparent.png" alt="Logo" width="300">
+  </a>
 
-## Development server
+  <br />
+<a href="https://car-auction-api.web.app/home">
+  https://car-auction-api.web.app/home
+  </a>
+  <br />
+  <br />
+  <p align="center">
+    Find your dream car or auction off your ride today!
+    <br />
+    <br />
+    <a href="https://github.com/SamirPomak/car-auction-app/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/SamirPomak/car-auction-app/issues">Request Feature</a>
+  </p>
+</div>
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#getting-started">Prerequisites</a></li>
+        <li><a href="#getting-started">Installation</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#usage">Usage & main features</a>
+    </li>
+    <li><a href="#authors">Dev team</a></li>
+  </ol>
+</details>
+<div id="about-the-project"></div>
+<!-- ABOUT THE PROJECT -->
 
-## Code scaffolding
+## 📋 About The Project
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+<div align="center">
+<img src="https://i.imgur.com/DgSl0Kc.png" alt="Logo" width="600" height="400">
+</div>
 
-## Build
+Car auction website where you can create an auction for your car or bid/comment on other auctions.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+<p align="right">(<a href="#top">back to top</a>)</p>
+<div id="built-with"></div>
 
-## Running unit tests
+<!-- Bult with -->
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### 🛠 Built With
 
-## Running end-to-end tests
+#### Front-End
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- [Angular (v16.2)](https://angular.io/docs)
+- [PrimeNG (v16)](https://www.primefaces.org/primeng-v16-lts/)
 
-## Further help
+#### Back-End
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- [Firebase Cloud Firestore](https://firebase.google.com/products/firestore)
+- [Firebase Cloud Storage](https://firebase.google.com/products/storage/)
+- [Firebase Auth](https://firebase.google.com/products/auth)
+- [Firebase Hosting](https://firebase.google.com/products/hosting)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+<div id="getting-started"></div>
+<!-- GETTING STARTED -->
+
+## 🚀 Getting Started
+
+To get a local copy up and running follow these simple steps.
+
+### Prerequisites
+
+- Node.js
+- npm
+
+### Installation
+
+- Clone the repo or download as ZIP
+  ```sh
+  git clone https://github.com/SamirPomak/car-auction-app.git
+  cd car-auction-app/
+  ```
+  Install NPM packages
+- app
+  ```sh
+  npm install
+  ```
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+<div id="usage"></div>
+<!-- USAGE EXAMPLES -->
+
+## 💻Usage & main features
+
+- **Start the app**
+
+```sh
+cd car-auction-app/
+npm start
+```
+
+- **Create an auction 👇**
+<div> <img src="https://i.imgur.com/YZLC3TV.png" alt="Logo" height=400 width=500></div>
+
+- **List all auctions 👇**
+<div> <img src="https://i.imgur.com/S5zQnUY.png" alt="Logo" height=400 width=500></div>
+
+- **View auction details 👇**
+<div> <img src="https://i.imgur.com/qvd5Lxx.png" alt="Logo" height=400></div>
+
+- **Place a bid or add a comment (only for authorized users) 👇**
+<div> <img src="https://i.imgur.com/jUWZ9DM.png" alt="Logo" height=400></div>
+
+- **List your own auctions 👇**
+<div> <img src="https://i.imgur.com/J6gUGUd.png" alt="Logo" height=400></div>
+
+- **Edit your auction 👇**
+<div> <img src="https://i.imgur.com/oafgXgs.png" alt="Logo" height=400></div>
+
+- **Edit your profile 👇**
+<div> <img src="https://i.imgur.com/bPmBOLk.png" alt="Logo" height=400></div>
+
+- **Dark theme 🌙**
+<div> <img src="https://i.imgur.com/6rEJSXz.png" alt="Logo" height=400></div>
+
+- **Mobile view 📱**
+<div> <img src="https://i.imgur.com/G0v8O5x.png" alt="Logo" height=400></div>
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<div id="authors"></div>
+<!-- CONTACT -->
+
+## 🚗 Dev team:
+
+👨‍💻 **Samir Pomak**: [<img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="Logo" width="25" height="25">](https://www.linkedin.com/in/samir-pomak-a93841204/)
+<br/>
+
+<p align="right">(<a href="#top">back to top</a>)</p>
