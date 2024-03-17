@@ -4,9 +4,8 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { UserService } from 'src/app/services/user.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ToggleButtonChangeEvent } from 'primeng/togglebutton';
-import { Inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { AuctionService } from 'src/app/services/auction.service';
+import { ThemeService } from 'src/app/services/theme.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -109,7 +108,7 @@ export class ToolbarComponent implements OnInit {
     private destroyerRef: DestroyRef,
     private messageService: MessageService,
     private auctionService: AuctionService,
-    @Inject(DOCUMENT) private document: Document
+    private themeService: ThemeService
   ) {}
   ngOnInit() {
     this.userService
@@ -122,7 +121,7 @@ export class ToolbarComponent implements OnInit {
     const theme = localStorage.getItem(this.THEME_PREF_KEY);
     if (theme === 'dark') {
       this.darkMode = true;
-      this.document.documentElement.classList.add('dark');
+      this.themeService.switchTheme('dark');
     }
   }
 
@@ -142,9 +141,9 @@ export class ToolbarComponent implements OnInit {
     this.darkMode = !!event.checked;
 
     if (this.darkMode) {
-      this.document.documentElement.classList.add('dark');
+      this.themeService.switchTheme('dark');
     } else {
-      this.document.documentElement.classList.remove('dark');
+      this.themeService.switchTheme('light');
     }
 
     localStorage.setItem(this.THEME_PREF_KEY, this.darkMode ? 'dark' : 'light');
