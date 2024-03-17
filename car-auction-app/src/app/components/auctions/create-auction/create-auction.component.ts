@@ -70,7 +70,7 @@ export class CreateAuctionComponent implements OnInit {
         if (auction) {
           this.mode = 'edit';
           this.auction = auction;
-          const { author, bids, id, ...data } = auction;
+          const { author, bids, id, comments, ...data } = auction as Auction;
           this.models = this.carInfoService
             .getModelsForBrand(auction.make)
             .map((value) => ({ value, label: value }));
