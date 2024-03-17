@@ -13,6 +13,7 @@ import {
 } from '@angular/fire/auth-guard';
 import { auctionResolver } from './components/auctions/auction.resolver';
 import { ProfileComponent } from './components/auth/profile/profile.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -57,6 +58,7 @@ const routes: Routes = [
       },
     ],
   },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({

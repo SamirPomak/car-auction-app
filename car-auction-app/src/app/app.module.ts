@@ -36,6 +36,7 @@ import { ProfileComponent } from './components/auth/profile/profile.component';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { AvatarModule } from 'primeng/avatar';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
     AuctionDetailsComponent,
     CreateAuctionComponent,
     ProfileComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
