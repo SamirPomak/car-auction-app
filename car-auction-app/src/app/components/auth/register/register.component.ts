@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { UserService } from 'src/app/services/user.service';
 import { CustomValidators } from 'src/app/utils/CustomValidators';
@@ -14,7 +15,8 @@ export class RegisterComponent {
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {}
   registerForm = this.formBuilder.nonNullable.group(
     {
@@ -37,6 +39,7 @@ export class RegisterComponent {
             summary: 'Success!',
             detail: 'You have been registered successfully!',
           });
+          this.router.navigate(['auctions']);
         })
         .catch((error) => {
           this.messageService.add({
