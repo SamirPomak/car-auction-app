@@ -116,8 +116,6 @@ export class ToolbarComponent implements OnInit {
       .getUserObservable()
       .pipe(takeUntilDestroyed(this.destroyerRef))
       .subscribe((user) => {
-        console.log(user);
-
         this.items = user ? this.loggedInUserMenuItems : this.defaultMenuItems;
       });
 

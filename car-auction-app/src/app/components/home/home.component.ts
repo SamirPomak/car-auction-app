@@ -23,7 +23,6 @@ export class HomeComponent {
       .subscribe(async (data) => {
         this.loadingAuctions = false;
         this.auctions = data.slice(data.length - 3) as Auction[];
-        console.log(data);
       });
   }
   onAuctionClick(id: string) {

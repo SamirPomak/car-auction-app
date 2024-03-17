@@ -70,7 +70,6 @@ export class CreateAuctionComponent implements OnInit {
         if (auction) {
           this.mode = 'edit';
           this.auction = auction;
-          console.log(auction);
           const { author, bids, id, ...data } = auction;
           this.models = this.carInfoService
             .getModelsForBrand(auction.make)
@@ -146,7 +145,10 @@ export class CreateAuctionComponent implements OnInit {
               this.auction.id,
               this.auctionForm.getRawValue()
             ));
-          auctionId = this.auction?.id || '';
+
+          if (this.auction?.id) {
+            auctionId = this.auction.id;
+          }
         }
         this.messageService.add({
           severity: 'success',
@@ -183,7 +185,6 @@ export class CreateAuctionComponent implements OnInit {
   onUpload(event: FileUploadHandlerEvent) {
     if (!this.user) return;
 
-    console.log(event);
     if (this.mode === 'default') {
       this.auctionForm.controls.images.setValue(
         event.files.map((file) => ({

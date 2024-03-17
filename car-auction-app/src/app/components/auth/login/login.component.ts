@@ -17,6 +17,7 @@ export class LoginComponent {
     private messageService: MessageService,
     private router: Router
   ) {}
+
   loginForm = this.formBuilder.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],

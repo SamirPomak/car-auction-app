@@ -36,6 +36,7 @@ import { ProfileComponent } from './components/auth/profile/profile.component';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { AvatarModule } from 'primeng/avatar';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+
 @NgModule({
   declarations: [
     AppComponent,

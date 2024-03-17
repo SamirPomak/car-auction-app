@@ -18,6 +18,7 @@ export class RegisterComponent {
     private messageService: MessageService,
     private router: Router
   ) {}
+
   registerForm = this.formBuilder.nonNullable.group(
     {
       email: ['', [Validators.required, Validators.email]],
@@ -32,8 +33,7 @@ export class RegisterComponent {
       this.submitInProgress = true;
       this.userService
         .register(this.registerForm.getRawValue())
-        .then((credentials) => {
-          console.log({ credentials });
+        .then(() => {
           this.messageService.add({
             severity: 'success',
             summary: 'Success!',

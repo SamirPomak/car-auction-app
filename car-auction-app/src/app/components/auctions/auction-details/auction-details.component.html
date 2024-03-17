@@ -12,6 +12,7 @@
       }}</span>
     </span>
   </div>
+
   <p-galleria
     [value]="auction.images"
     [containerStyle]="{ 'max-width': '100%' }"
@@ -103,6 +104,7 @@
       (onClick)="addComment()"
     ></p-button>
   </div>
+
   <div class="flex flex-column mt-4" *ngIf="commentsAndBids.length">
     <div class="flex mb-4" *ngFor="let commentOrBid of commentsAndBids">
       <p-avatar

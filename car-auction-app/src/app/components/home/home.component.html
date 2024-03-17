@@ -66,10 +66,12 @@
                   [alt]="auction.make"
                   (click)="onAuctionClick(auction.id)"
                 />
+
                 <div class="text-lg">
                   ~{{ auction.mileage }} kms, {{ auction.engine }},
                   {{ auction.transmission }}
                 </div>
+
                 <p-chip
                   styleClass="bg-gray-800 absolute"
                   [style]="{ bottom: '60px', left: '10px' }"

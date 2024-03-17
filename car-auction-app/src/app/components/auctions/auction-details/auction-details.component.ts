@@ -33,6 +33,7 @@ export class AuctionDetailsComponent {
   comment = '';
   commentsAndBids: Partial<Bid & Comment>[] = [];
   @ViewChild('inplace') inplaceInput!: Inplace;
+
   constructor(
     private route: ActivatedRoute,
     private destroyerRef: DestroyRef,

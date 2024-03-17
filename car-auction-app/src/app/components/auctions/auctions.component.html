@@ -19,6 +19,7 @@
         ></p-dropdown>
       </div>
     </ng-template>
+
     <ng-template let-auction pTemplate="gridItem">
       <div class="col-12 sm:col-6 lg:col-6 xl:col-3 p-2">
         <div class="p-3 border-1 surface-border surface-card border-round">
@@ -35,6 +36,7 @@
                 }}</span
               >
             </span>
+
             <p-button
               *ngIf="mode"
               icon="pi pi-pencil"
@@ -50,10 +52,12 @@
               [alt]="auction.make"
               (click)="onAuctionClick(auction.id)"
             />
+
             <div class="text-lg">
               ~{{ auction.mileage }} kms, {{ auction.engine }},
               {{ auction.transmission }}
             </div>
+
             <p-chip
               styleClass="bg-gray-800 absolute"
               [style]="{ bottom: '60px', left: '10px' }"
