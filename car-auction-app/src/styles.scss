@@ -9,4 +9,10 @@ html {
 
 html.dark {
   scrollbar-color: var(--green-600) black;
+
+  p-table th {
+    background: #1e1e1e !important;
+    border: 1px solid #404040 !important;
+    color: rgba(255, 255, 255, 0.87) !important;
+  }
 }
