@@ -9,12 +9,22 @@ import {
   updateDoc,
 } from '@angular/fire/firestore';
 import { Auction } from '../types';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuctionService {
+  private searchQuery$ = new BehaviorSubject('');
   constructor(private firestore: Firestore) {}
+
+  getSearchQueryObservable() {
+    return this.searchQuery$.asObservable();
+  }
+
+  updateSearch(query: string) {
+    this.searchQuery$.next(query.trim().toLowerCase());
+  }
 
   getAuctionObserver(id: string) {
     const auctionDoc = doc(this.firestore, `auctions/${id}`);

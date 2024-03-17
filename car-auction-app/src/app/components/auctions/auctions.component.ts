@@ -1,6 +1,7 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest, debounceTime } from 'rxjs';
 import { AuctionService } from 'src/app/services/auction.service';
 import { UserService } from 'src/app/services/user.service';
 import { Auction } from 'src/app/types';
@@ -26,10 +27,12 @@ export class AuctionsComponent {
       this.mode = routeMode;
     }
 
-    this.auctionService
-      .getAllAuctionsObserver()
+    combineLatest([
+      this.auctionService.getSearchQueryObservable().pipe(debounceTime(500)),
+      this.auctionService.getAllAuctionsObserver(),
+    ])
       .pipe(takeUntilDestroyed(this.destroyerRef))
-      .subscribe(async (data) => {
+      .subscribe(async ([query, data]) => {
         this.loadingAuctions = false;
         if (this.mode === 'myAuctions') {
           const userId = (await userService.getUser())?.uid;
@@ -38,6 +41,11 @@ export class AuctionsComponent {
           );
         } else {
           this.auctions = data as Auction[];
+          this.auctions = this.auctions.filter((auction) =>
+            `${auction.year} ${auction.make} ${auction.model}`
+              .toLowerCase()
+              .includes(query)
+          );
         }
         console.log(data);
       });

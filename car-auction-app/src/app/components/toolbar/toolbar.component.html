@@ -9,16 +9,28 @@
         />
       </a>
       <span class="p-input-icon-right">
-        <i class="pi pi-search"></i>
-        <input type="text" pInputText placeholder="Search" />
+        <i
+          class="pi pi-times cursor-pointer font-bold text-red-600"
+          *ngIf="searchQuery.length"
+          (click)="onClearSearch()"
+        ></i>
+        <i class="pi pi-search" *ngIf="!searchQuery.length"></i>
+        <input
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="onSearch()"
+          type="text"
+          pInputText
+          placeholder="Search"
+        />
       </span>
     </div>
   </ng-template>
   <ng-template pTemplate="end">
     <p-toggleButton
+      class="ml-2"
       [(ngModel)]="darkMode"
-      onIcon="pi pi-sun"
       offIcon="pi pi-moon"
+      onIcon="pi pi-sun"
       (onChange)="onThemeChange($event)"
     ></p-toggleButton>
   </ng-template>

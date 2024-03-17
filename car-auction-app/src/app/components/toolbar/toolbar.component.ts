@@ -6,6 +6,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ToggleButtonChangeEvent } from 'primeng/togglebutton';
 import { Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { AuctionService } from 'src/app/services/auction.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -101,11 +102,13 @@ export class ToolbarComponent implements OnInit {
     },
   ];
   items = this.defaultMenuItems;
+  searchQuery = '';
   constructor(
     private router: Router,
     private userService: UserService,
     private destroyerRef: DestroyRef,
     private messageService: MessageService,
+    private auctionService: AuctionService,
     @Inject(DOCUMENT) private document: Document
   ) {}
   ngOnInit() {
@@ -123,6 +126,18 @@ export class ToolbarComponent implements OnInit {
       this.darkMode = true;
       this.document.documentElement.classList.add('dark');
     }
+  }
+
+  onSearch() {
+    this.auctionService.updateSearch(this.searchQuery);
+    if (this.router.url !== '/auctions') {
+      this.router.navigate(['auctions']);
+    }
+  }
+
+  onClearSearch() {
+    this.searchQuery = '';
+    this.auctionService.updateSearch('');
   }
 
   onThemeChange(event: ToggleButtonChangeEvent) {
