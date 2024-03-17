@@ -47,8 +47,8 @@
 
     <p-inplace
       [closable]="true"
-      [disabled]="false"
-      title="Please login to place a bid!"
+      [disabled]="!user"
+      [title]="user ? 'Bid' : 'Please login to place a bid!'"
       (onActivate)="onActivateBidMenu()"
       #inplace
     >
