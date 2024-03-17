@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://car-auction-api.web.app/home">
-    <img src="../car-auction-app/src/assets/car-auction-high-resolution-logo-transparent.png" alt="Logo" width="300">
+    <img src="car-auction-app/src/assets/car-auction-high-resolution-logo-transparent.png" alt="Logo" width="300">
   </a>
 
   <br />
