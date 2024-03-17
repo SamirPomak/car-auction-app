@@ -6,15 +6,27 @@ import { RegisterComponent } from './components/auth/register/register.component
 import { AuctionsComponent } from './components/auctions/auctions.component';
 import { AuctionDetailsComponent } from './components/auctions/auction-details/auction-details.component';
 import { CreateAuctionComponent } from './components/auctions/create-auction/create-auction.component';
-import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
+import {
+  canActivate,
+  redirectLoggedInTo,
+  redirectUnauthorizedTo,
+} from '@angular/fire/auth-guard';
 import { auctionResolver } from './components/auctions/auction.resolver';
 import { ProfileComponent } from './components/auth/profile/profile.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  {
+    path: 'login',
+    component: LoginComponent,
+    ...canActivate(() => redirectLoggedInTo('/home')),
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    ...canActivate(() => redirectLoggedInTo('/home')),
+  },
   {
     path: 'profile',
     component: ProfileComponent,
