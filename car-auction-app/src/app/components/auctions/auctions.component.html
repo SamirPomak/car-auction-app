@@ -21,8 +21,8 @@
     </ng-template>
 
     <ng-template let-auction pTemplate="gridItem">
-      <div class="col-12 sm:col-6 lg:col-6 xl:col-3 p-2">
-        <div class="p-3 border-1 surface-border surface-card border-round">
+      <div class="col-12 lg:col-6 xl:col-3 p-2">
+        <div class="p-3 pb-0 border-1 surface-border surface-card border-round">
           <div
             class="flex flex-wrap align-items-center justify-content-between gap-2"
           >
@@ -45,27 +45,28 @@
               (onClick)="onAuctionEditClick(auction.id)"
             ></p-button>
           </div>
-          <div class="flex flex-column gap-3 pt-4 relative">
-            <img
-              class="w-12 shadow-2 border-round cursor-pointer"
-              [src]="auction.images[0].url"
-              [alt]="auction.make"
-              (click)="onAuctionClick(auction.id)"
-            />
+          <div class="flex flex-column gap-3 pt-4">
+            <div class="relative">
+              <img
+                class="w-12 shadow-2 border-round cursor-pointer"
+                [src]="auction.images[0].url"
+                [alt]="auction.make"
+                (click)="onAuctionClick(auction.id)"
+              />
+              <p-chip
+                styleClass="bg-gray-800 absolute"
+                [style]="{ bottom: '10px', left: '10px' }"
+              >
+                <div class="p-2 text-white">
+                  <span class="text-500">Bid: </span>${{ auction.price }}
+                </div>
+              </p-chip>
+            </div>
 
-            <div class="text-lg">
+            <div class="text-lg" style="min-height: 50px">
               ~{{ auction.mileage }} kms, {{ auction.engine }},
               {{ auction.transmission }}
             </div>
-
-            <p-chip
-              styleClass="bg-gray-800 absolute"
-              [style]="{ bottom: '60px', left: '10px' }"
-            >
-              <div class="p-2 text-white">
-                <span class="text-500">Bid: </span>${{ auction.price }}
-              </div>
-            </p-chip>
           </div>
         </div>
       </div>
