@@ -68,6 +68,8 @@ Car auction website where you can create an auction for your car or bid/comment 
 
 - [Angular (v16.2)](https://angular.io/docs)
 - [PrimeNG (v16)](https://www.primefaces.org/primeng-v16-lts/)
+- [Angular Fire](https://github.com/angular/angularfire)
+  🔥 All data is updated in realtime thanks to Firestore's collections, consumed with Angular Fire's utils
 
 #### Back-End
 
