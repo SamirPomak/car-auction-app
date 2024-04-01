@@ -7,7 +7,9 @@ import {
   doc,
   docData,
   updateDoc,
+  deleteDoc,
 } from '@angular/fire/firestore';
+import { ref, deleteObject, Storage } from '@angular/fire/storage';
 import { Auction } from '../types';
 import { BehaviorSubject } from 'rxjs';
 
@@ -16,7 +18,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuctionService {
   private searchQuery$ = new BehaviorSubject('');
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore, private storage: Storage) {}
 
   getSearchQueryObservable() {
     return this.searchQuery$.asObservable();
@@ -35,6 +37,7 @@ export class AuctionService {
     const auctionCollection = collection(this.firestore, 'auctions');
     return collectionData(auctionCollection);
   }
+
   uploadAuction(auction: Partial<Auction>) {
     return addDoc(collection(this.firestore, 'auctions'), auction);
   }
@@ -42,5 +45,17 @@ export class AuctionService {
   updateAuction(id: string, data: Partial<Auction>) {
     const auctionDoc = doc(this.firestore, `auctions/${id}`);
     return updateDoc(auctionDoc, data);
+  }
+
+  async deleteAuction(auction: Auction) {
+    const auctionDoc = doc(this.firestore, `auctions/${auction.id}`);
+    if (auction.images.length) {
+      for (const { path } of auction.images) {
+        const imageRef = ref(this.storage, path);
+        await deleteObject(imageRef);
+      }
+    }
+
+    return deleteDoc(auctionDoc);
   }
 }

@@ -1,7 +1,7 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SelectItem } from 'primeng/api';
+import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
 import { combineLatest, debounceTime, firstValueFrom } from 'rxjs';
 import { AuctionService } from 'src/app/services/auction.service';
 import { UserService } from 'src/app/services/user.service';
@@ -28,7 +28,9 @@ export class AuctionsComponent {
     private route: ActivatedRoute,
     private userService: UserService,
     private router: Router,
-    private auctionService: AuctionService
+    private auctionService: AuctionService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {
     const routeMode = route.snapshot.data['mode'];
     if (routeMode) {
@@ -65,6 +67,35 @@ export class AuctionsComponent {
 
   onAuctionEditClick(id: string) {
     this.router.navigate(['auctions/edit', id]);
+  }
+
+  onAuctionDeleteClick(event: Event, auction: Auction) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Are you sure you want to delete this auction?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-trash',
+      accept: () => {
+        this.auctionService
+          .deleteAuction(auction)
+          .then(() => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success!',
+              detail: 'Your auction has been deleted!',
+              life: 4000,
+            });
+          })
+          .catch(() => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error!',
+              detail: 'Could not delete your auction!',
+              life: 4000,
+            });
+          });
+      },
+    });
   }
 
   async onSortChange(event: any) {

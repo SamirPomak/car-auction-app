@@ -19,7 +19,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
 import { AuctionsComponent } from './components/auctions/auctions.component';
 import { AuctionDetailsComponent } from './components/auctions/auction-details/auction-details.component';
@@ -38,6 +38,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { DividerModule } from 'primeng/divider';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [
@@ -83,9 +84,10 @@ import { DividerModule } from 'primeng/divider';
     AvatarModule,
     ToggleButtonModule,
     DividerModule,
+    ConfirmDialogModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [FormBuilder, MessageService],
+  providers: [FormBuilder, MessageService, ConfirmationService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
