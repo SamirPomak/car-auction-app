@@ -25,6 +25,11 @@
       pInputText
       class="w-full mb-3"
     />
+    <small
+      class="text-red-600 block mb-2 font-bold"
+      *ngIf="!loginForm.get('email')?.valid && loginForm.get('email')?.dirty"
+      >Invalid Email!</small
+    >
 
     <label for="password1" class="block text-900 font-medium mb-2"
       >Password</label
@@ -34,10 +39,17 @@
       placeholder="Password"
       formControlName="password"
       inputStyleClass="w-full flex"
-      styleClass="w-full flex mb-3"
+      styleClass="w-full flex"
       [feedback]="false"
       [toggleMask]="true"
     />
+    <small
+      class="text-red-600 block mt-2 font-bold"
+      *ngIf="
+        !loginForm.get('password')?.valid && loginForm.get('password')?.dirty
+      "
+      >Enter a password!</small
+    >
 
     <button
       pButton
@@ -45,7 +57,7 @@
       [disabled]="!loginForm.valid"
       label="Sign In"
       type="submit"
-      class="w-full bg-green-600"
+      class="w-full bg-green-600 mt-3"
     ></button>
   </form>
 </div>

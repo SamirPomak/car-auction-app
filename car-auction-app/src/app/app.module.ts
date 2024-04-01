@@ -37,6 +37,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { AvatarModule } from 'primeng/avatar';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { DividerModule } from 'primeng/divider';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     InputTextareaModule,
     AvatarModule,
     ToggleButtonModule,
+    DividerModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [FormBuilder, MessageService],
